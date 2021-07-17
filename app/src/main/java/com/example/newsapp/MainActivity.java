@@ -19,6 +19,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class MainActivity extends AppCompatActivity implements CategoryRVAdapter.CategoryClickInterface{
 //44a6f0164757476d9f4e656d94362324
+    public static final String API_KEY ="44a6f0164757476d9f4e656d94362324";
 
     private RecyclerView newsRV, categoryRV;
     private ProgressBar loadingPB;
@@ -67,8 +68,8 @@ public class MainActivity extends AppCompatActivity implements CategoryRVAdapter
     {
         loadingPB.setVisibility(View.VISIBLE);
         articlesArrayList.clear();
-        String categoryURL = "https://newsapi.org/v2/top-headlines?country=id&category=" + category + "&apiKey=44a6f0164757476d9f4e656d94362324";
-        String url = "https://newsapi.org/v2/top-headlines?country=id&excludeDomains=stackoverflow.com&sortBy=publishedAt&apiKey=44a6f0164757476d9f4e656d94362324";
+        String categoryURL = "https://newsapi.org/v2/top-headlines?country=id&category=" + category + "&apiKey="+API_KEY;
+        String url = "https://newsapi.org/v2/top-headlines?country=id&excludeDomains=stackoverflow.com&sortBy=publishedAt&apiKey="+API_KEY;
         String BASE_URL = "https://newsapi.org";
 
         Retrofit retrofit = new Retrofit.Builder()
@@ -100,7 +101,10 @@ public class MainActivity extends AppCompatActivity implements CategoryRVAdapter
                             articles.get(i).getDescription(),
                             articles.get(i).getUrlToImage(),
                             articles.get(i).getUrl(),
-                            articles.get(i).getContent()));
+                            articles.get(i).getContent(),
+                            articles.get(i).getPublishedAt(),
+                            articles.get(i).getAuthor(),
+                            articles.get(i).getSource()));
                 }
                 newsRVAdapter.notifyDataSetChanged();
             }

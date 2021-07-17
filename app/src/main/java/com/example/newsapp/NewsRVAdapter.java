@@ -16,7 +16,9 @@ import com.squareup.picasso.Picasso;
 
 import org.w3c.dom.Text;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 public class NewsRVAdapter extends RecyclerView.Adapter<NewsRVAdapter.ViewHolder>{
     private ArrayList<Articles> articlesArrayList;
@@ -37,9 +39,12 @@ public class NewsRVAdapter extends RecyclerView.Adapter<NewsRVAdapter.ViewHolder
 
     @Override
     public void onBindViewHolder(@NonNull  NewsRVAdapter.ViewHolder holder, int position) {
+
+
         Articles articles = articlesArrayList.get(position);
-        holder.subTitleTV.setText(articles.getDescription());
+        holder.publishAtTV.setText(articles.getPublishedAt());
         holder.titleTV.setText(articles.getTitle());
+        holder.publisherTV.setText(articles.getSource().getName());
         Picasso.get().load(articles.getUrlToImage()).into(holder.newsIV);
         holder.itemView.setOnClickListener(new View.OnClickListener(){
 
@@ -51,6 +56,9 @@ public class NewsRVAdapter extends RecyclerView.Adapter<NewsRVAdapter.ViewHolder
                 i.putExtra("desc",articles.getDescription());
                 i.putExtra("image",articles.getUrlToImage());
                 i.putExtra("url",articles.getUrl());
+                i.putExtra("publishAt",articles.getPublishedAt());
+                i.putExtra("publisher",articles.getSource().getName());
+                i.putExtra("author",articles.getAuthor());
                 context.startActivity(i);
             }
         });
@@ -62,12 +70,13 @@ public class NewsRVAdapter extends RecyclerView.Adapter<NewsRVAdapter.ViewHolder
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-        private TextView titleTV, subTitleTV;
+        private TextView titleTV, publishAtTV, publisherTV;
         private ImageView newsIV;
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             titleTV = itemView.findViewById(R.id.idTVNewsHeading);
-            subTitleTV = itemView.findViewById(R.id.idTVSubTitle);
+            publishAtTV = itemView.findViewById(R.id.idPublishAt);
+            publisherTV = itemView.findViewById(R.id.idPublisher);
             newsIV = itemView.findViewById(R.id.idIVNews);
         }
     }

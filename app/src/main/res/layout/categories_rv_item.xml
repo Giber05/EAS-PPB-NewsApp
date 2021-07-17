@@ -18,17 +18,20 @@
             android:src="@color/yellow"
             android:scaleType="centerCrop"
             />
+
         <TextView
+            android:id="@+id/idTVCategory"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="center"
             android:layout_centerInParent="true"
-            android:text="Category"
-            android:textColor="@color/white"
-            android:textAlignment="center"
+            android:gravity="center"
             android:padding="3dp"
+
+            android:text="Category"
+            android:textAlignment="center"
+            android:textColor="@color/white"
             android:textStyle="bold"
-            android:id="@+id/idTVCategory"/>
+            app:drawableTint="#AC3232" />
     </RelativeLayout>
 
 </androidx.cardview.widget.CardView>

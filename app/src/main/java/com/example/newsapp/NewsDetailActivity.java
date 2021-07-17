@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -14,9 +15,9 @@ import com.squareup.picasso.Picasso;
 
 public class NewsDetailActivity extends AppCompatActivity {
 
-    String title,desc,content,imageURL,url;
+    String title,desc,content,imageURL,url,publishAt,publisher,author;
 
-    private TextView titleTV, subDescTv,contentTV;
+    private TextView titleTV, subDescTv,contentTV, publishAtTV,publisherTV,authorTV;
     private ImageView newsIV;
     Button readNewsBtn;
     @Override
@@ -28,25 +29,53 @@ public class NewsDetailActivity extends AppCompatActivity {
         desc = getIntent().getStringExtra("desc");
         imageURL = getIntent().getStringExtra("image");
         url = getIntent().getStringExtra("url");
+        publishAt = getIntent().getStringExtra("publishAt");
+        author = getIntent().getStringExtra("author");
+        publisher = getIntent().getStringExtra("publisher");
 
         titleTV = findViewById(R.id.idTVDetailTitle);
         subDescTv = findViewById(R.id.idTVDetailSubDesc);
         contentTV = findViewById(R.id.idTVDetailContent);
         newsIV = findViewById(R.id.idIVDetailNews);
+        publishAtTV=findViewById(R.id.idTVDetailPublishAt);
+        authorTV=findViewById(R.id.idTVDetailAuthor);
+        publisherTV=findViewById(R.id.idTVDetailPublisher);
         readNewsBtn=findViewById(R.id.idBtnReadNews);
+
+
 
         titleTV.setText(title);
         contentTV.setText(content);
         subDescTv.setText(desc);
+        publisherTV.setText(publisher);
+        authorTV.setText(author);
+        publishAtTV.setText(publishAt);
+
         Picasso.get().load(imageURL).into(newsIV);
 
         readNewsBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i = new Intent(Intent.ACTION_SEND);
-                i.setData(Uri.parse(url));
-//                startActivity(i);
+                Log.d("url",url);
+                openWebPage(url);
             }
         });
+    }
+
+    public void openWebPage(String url) {
+
+        Uri webpage = Uri.parse(url);
+
+        if (!url.startsWith("http://") && !url.startsWith("https://")) {
+            webpage = Uri.parse("http://" + url);
+        }
+
+        Intent intent = new Intent(Intent.ACTION_VIEW, webpage);
+        if (intent.resolveActivity(getPackageManager()) != null) {
+            startActivity(intent);
+        }
+        else{
+            Log.d("intent","resolveActivity = Null");
+        }
     }
 }
