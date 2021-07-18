@@ -1,6 +1,8 @@
-package com.example.newsapp;
+package com.example.newsapp.Activity;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -9,7 +11,17 @@ import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
+import com.example.newsapp.Adapter.CategoryRVAdapter;
+import com.example.newsapp.Adapter.NewsRVAdapter;
+import com.example.newsapp.Model.Articles;
+import com.example.newsapp.Model.CategoryRVModel;
+import com.example.newsapp.R;
+import com.example.newsapp.Response.ArticleResponse;
+import com.example.newsapp.Retrofit.RetrofitAPI;
+import com.example.newsapp.ViewModel.ArticleViewModel;
+
 import java.util.ArrayList;
+import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -27,26 +39,18 @@ public class MainActivity extends AppCompatActivity implements CategoryRVAdapter
     private ArrayList<CategoryRVModel> categoryRVModelArrayList;
     private CategoryRVAdapter categoryRVAdapter;
     private NewsRVAdapter newsRVAdapter;
+
+    ArticleViewModel articleViewModel;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        newsRV = findViewById(R.id.idRVNews);
-        categoryRV = findViewById(R.id.idRVCategories);
-        loadingPB = findViewById(R.id.idPBLoading);
-        articlesArrayList = new ArrayList<>();
-        categoryRVModelArrayList = new ArrayList<>();
-        newsRVAdapter = new NewsRVAdapter(articlesArrayList,this);
-        categoryRVAdapter = new CategoryRVAdapter(categoryRVModelArrayList,this,this::onCategoryClick);
-
-        newsRV.setLayoutManager(new LinearLayoutManager(this));
-        newsRV.setAdapter(newsRVAdapter);
-        categoryRV.setAdapter(categoryRVAdapter);
-
+        init();
         getCategories();
 
-        getNews("All");
+        getArticles("All");
+//        getNews("All");
         newsRVAdapter.notifyDataSetChanged();
     }
 
@@ -55,7 +59,7 @@ public class MainActivity extends AppCompatActivity implements CategoryRVAdapter
         categoryRVModelArrayList.add(new CategoryRVModel("All","https://images.unsplash.com/photo-1504711434969-e33886168f5c?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=750&q=80"));
         categoryRVModelArrayList.add(new CategoryRVModel("Technology","https://images.unsplash.com/photo-1485827404703-89b55fcc595e?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=750&q=80"));
         categoryRVModelArrayList.add(new CategoryRVModel("Science","https://images.unsplash.com/photo-1581093450021-4a7360e9a6b5?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=750&q=80"));
-        categoryRVModelArrayList.add(new CategoryRVModel("Sport","https://images.unsplash.com/photo-1611119535617-ee346f83bb2c?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=750&q=80"));
+        categoryRVModelArrayList.add(new CategoryRVModel("Sports","https://images.unsplash.com/photo-1611119535617-ee346f83bb2c?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=750&q=80"));
         categoryRVModelArrayList.add(new CategoryRVModel("General","https://images.unsplash.com/photo-1618289733606-9ae55927a287?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=751&q=80"));
         categoryRVModelArrayList.add(new CategoryRVModel("Business","https://images.unsplash.com/photo-1579532536935-619928decd08?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=750&q=80"));
         categoryRVModelArrayList.add(new CategoryRVModel("Entertainment","https://images.unsplash.com/photo-1603190287605-e6ade32fa852?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=750&q=80"));
@@ -78,22 +82,22 @@ public class MainActivity extends AppCompatActivity implements CategoryRVAdapter
                 .build();
         RetrofitAPI retrofitAPI = retrofit.create(RetrofitAPI.class);
 
-        Call<NewsModel> call;
+        Call<ArticleResponse> call;
         if(category.equals("All"))
         {
-            call = retrofitAPI.getAllNews(url);
+            call = retrofitAPI.getAllNews();
         }
         else
         {
             call = retrofitAPI.getNewsByCategory(categoryURL);
         }
 
-        call.enqueue(new Callback<NewsModel>() {
+        call.enqueue(new Callback<ArticleResponse>() {
             @Override
-            public void onResponse(Call<NewsModel> call, Response<NewsModel> response) {
-                NewsModel newsModel = response.body();
+            public void onResponse(Call<ArticleResponse> call, Response<ArticleResponse> response) {
+                ArticleResponse newsModel = response.body();
                 loadingPB.setVisibility(View.GONE);
-                ArrayList<Articles> articles = newsModel.getArticles();
+                List<Articles> articles = newsModel.getArticles();
                 for (int i = 0; i<articles.size();i++)
                 {
                     articlesArrayList.add(new Articles(
@@ -110,7 +114,7 @@ public class MainActivity extends AppCompatActivity implements CategoryRVAdapter
             }
 
             @Override
-            public void onFailure(Call<NewsModel> call, Throwable t) {
+            public void onFailure(Call<ArticleResponse> call, Throwable t) {
                 Toast.makeText(MainActivity.this,"Fail to get news",Toast.LENGTH_SHORT).show();
             }
         });
@@ -119,11 +123,42 @@ public class MainActivity extends AppCompatActivity implements CategoryRVAdapter
     @Override
     public void onCategoryClick(int position) {
         String category = categoryRVModelArrayList.get(position).getCategory();
-        getNews(category);
+//        getNews(category);
+        getArticles(category);
     }
 
-    @Override
-    public void onPointerCaptureChanged(boolean hasCapture) {
 
+    private void init()
+    {
+        newsRV = findViewById(R.id.idRVNews);
+        categoryRV = findViewById(R.id.idRVCategories);
+        loadingPB = findViewById(R.id.idPBLoading);
+        articlesArrayList = new ArrayList<>();
+        categoryRVModelArrayList = new ArrayList<>();
+        newsRVAdapter = new NewsRVAdapter(articlesArrayList,this);
+        categoryRVAdapter = new CategoryRVAdapter(categoryRVModelArrayList,this,this::onCategoryClick);
+
+        newsRV.setLayoutManager(new LinearLayoutManager(this));
+        newsRV.setAdapter(newsRVAdapter);
+        categoryRV.setAdapter(categoryRVAdapter);
+
+        articleViewModel = new ViewModelProvider(this).get(ArticleViewModel.class);
     }
+
+    private void getArticles(String category)
+    {
+        loadingPB.setVisibility(View.VISIBLE);
+        articlesArrayList.clear();
+        articleViewModel.getDashboardNewsResponseLiveData(category).observe(this, articleResponse -> {
+            if(articleResponse != null && articleResponse.getArticles()!=null
+            && !articleResponse.getArticles().isEmpty())
+            {
+                loadingPB.setVisibility(View.GONE);
+                List<Articles> articlesList = articleResponse.getArticles();
+                articlesArrayList.addAll(articlesList);
+                newsRVAdapter.notifyDataSetChanged();
+            }
+        });
+    }
+
 }

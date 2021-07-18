@@ -1,4 +1,4 @@
-package com.example.newsapp;
+package com.example.newsapp.Activity;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -11,6 +11,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.example.newsapp.R;
 import com.squareup.picasso.Picasso;
 
 public class NewsDetailActivity extends AppCompatActivity {

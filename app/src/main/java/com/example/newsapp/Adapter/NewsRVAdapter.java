@@ -1,8 +1,7 @@
-package com.example.newsapp;
+package com.example.newsapp.Adapter;
 
 import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,13 +11,12 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.newsapp.Model.Articles;
+import com.example.newsapp.Activity.NewsDetailActivity;
+import com.example.newsapp.R;
 import com.squareup.picasso.Picasso;
 
-import org.w3c.dom.Text;
-
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 
 public class NewsRVAdapter extends RecyclerView.Adapter<NewsRVAdapter.ViewHolder>{
     private ArrayList<Articles> articlesArrayList;
@@ -40,7 +38,6 @@ public class NewsRVAdapter extends RecyclerView.Adapter<NewsRVAdapter.ViewHolder
     @Override
     public void onBindViewHolder(@NonNull  NewsRVAdapter.ViewHolder holder, int position) {
 
-
         Articles articles = articlesArrayList.get(position);
         holder.publishAtTV.setText(articles.getPublishedAt());
         holder.titleTV.setText(articles.getTitle());
@@ -50,7 +47,7 @@ public class NewsRVAdapter extends RecyclerView.Adapter<NewsRVAdapter.ViewHolder
 
             @Override
             public void onClick(View v) {
-                Intent i = new Intent(context,NewsDetailActivity.class);
+                Intent i = new Intent(context, NewsDetailActivity.class);
                 i.putExtra("title",articles.getTitle());
                 i.putExtra("content",articles.getContent());
                 i.putExtra("desc",articles.getDescription());

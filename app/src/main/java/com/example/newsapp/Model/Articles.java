@@ -1,4 +1,4 @@
-package com.example.newsapp;
+package com.example.newsapp.Model;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;

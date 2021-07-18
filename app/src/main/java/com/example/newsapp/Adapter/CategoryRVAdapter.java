@@ -1,4 +1,4 @@
-package com.example.newsapp;
+package com.example.newsapp.Adapter;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -10,6 +10,8 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.newsapp.Model.CategoryRVModel;
+import com.example.newsapp.R;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -52,10 +54,6 @@ public class CategoryRVAdapter extends RecyclerView.Adapter<CategoryRVAdapter.Vi
         return categoryRVModels.size();
     }
 
-    public interface CategoryClickInterface
-    {
-        void onCategoryClick(int position);
-    }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         private TextView categoryTV;
@@ -65,5 +63,10 @@ public class CategoryRVAdapter extends RecyclerView.Adapter<CategoryRVAdapter.Vi
             categoryTV = itemView.findViewById(R.id.idTVCategory);
             categoryIV = itemView.findViewById(R.id.idIVCategory);
         }
+    }
+
+    public interface CategoryClickInterface
+    {
+        void onCategoryClick(int position);
     }
 }

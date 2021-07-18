@@ -1,4 +1,4 @@
-package com.example.newsapp;
+package com.example.newsapp.Model;
 
 public class CategoryRVModel {
     private String category;

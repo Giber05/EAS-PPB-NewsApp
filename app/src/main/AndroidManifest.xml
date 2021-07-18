@@ -17,8 +17,8 @@
         android:roundIcon="@drawable/ic_newspaper"
         android:supportsRtl="true"
         android:theme="@style/Theme.NewsApp">
-        <activity android:name=".NewsDetailActivity"></activity>
-        <activity android:name=".MainActivity">
+        <activity android:name=".Activity.NewsDetailActivity"></activity>
+        <activity android:name=".Activity.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
