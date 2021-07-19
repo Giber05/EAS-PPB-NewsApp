@@ -18,22 +18,22 @@ public class NewsDetailActivity extends AppCompatActivity {
 
     String title,desc,content,imageURL,url,publishAt,publisher,author;
 
-    private TextView titleTV, subDescTv,contentTV, publishAtTV,publisherTV,authorTV;
+    private TextView titleTV, subDescTv,contentTV, publishAtTV,publisherTV,authorTV, urlTV;
     private ImageView newsIV;
     Button readNewsBtn;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_news_detail);
-        title = getIntent().getStringExtra("title");
-        content = getIntent().getStringExtra("content");
-        desc = getIntent().getStringExtra("desc");
-        imageURL = getIntent().getStringExtra("image");
-        url = getIntent().getStringExtra("url");
-        publishAt = getIntent().getStringExtra("publishAt");
-        author = getIntent().getStringExtra("author");
-        publisher = getIntent().getStringExtra("publisher");
 
+        getDataFromIntent();
+        init();
+        setDetailNewsData();
+
+    }
+
+    private void init()
+    {
         titleTV = findViewById(R.id.idTVDetailTitle);
         subDescTv = findViewById(R.id.idTVDetailSubDesc);
         contentTV = findViewById(R.id.idTVDetailContent);
@@ -42,16 +42,30 @@ public class NewsDetailActivity extends AppCompatActivity {
         authorTV=findViewById(R.id.idTVDetailAuthor);
         publisherTV=findViewById(R.id.idTVDetailPublisher);
         readNewsBtn=findViewById(R.id.idBtnReadNews);
+        urlTV = findViewById(R.id.idTVDetailUrl);
+    }
 
+    private void getDataFromIntent()
+    {
+        title = getIntent().getStringExtra("title");
+        content = getIntent().getStringExtra("content");
+        desc = getIntent().getStringExtra("desc");
+        imageURL = getIntent().getStringExtra("image");
+        url = getIntent().getStringExtra("url");
+        publishAt = getIntent().getStringExtra("publishAt");
+        author = getIntent().getStringExtra("author");
+        publisher = getIntent().getStringExtra("publisher");
+    }
 
-
+    private void setDetailNewsData()
+    {
         titleTV.setText(title);
         contentTV.setText(content);
         subDescTv.setText(desc);
         publisherTV.setText(publisher);
         authorTV.setText(author);
         publishAtTV.setText(publishAt);
-
+        urlTV.setText(url);
         Picasso.get().load(imageURL).into(newsIV);
 
         readNewsBtn.setOnClickListener(new View.OnClickListener() {

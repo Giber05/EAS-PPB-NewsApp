@@ -3,7 +3,6 @@ package com.example.newsapp.Repository;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
-import com.example.newsapp.Model.NewsModel;
 import com.example.newsapp.Response.ArticleResponse;
 import com.example.newsapp.Retrofit.RetrofitAPI;
 import com.example.newsapp.Retrofit.RetrofitRequest;
@@ -23,7 +22,7 @@ public class ArticleRepository {
     }
 
     public LiveData<ArticleResponse> getDashboardNews(String category) {
-        final MutableLiveData<ArticleResponse> data = new MutableLiveData<>();
+    final MutableLiveData<ArticleResponse> data = new MutableLiveData<>();
 
         if(category.equals("All"))
         {
@@ -61,7 +60,24 @@ public class ArticleRepository {
                     });
             return data;
         }
+    }
 
+    public LiveData<ArticleResponse> getSearchNews(String key) {
+        final MutableLiveData<ArticleResponse> data = new MutableLiveData<>();
+        retrofitAPI.getNewsBySearch("https://newsapi.org/v2/top-headlines?country=id&q="+key+"&sortBy=popularity&apiKey="+API_KEY)
+                .enqueue(new Callback<ArticleResponse>() {
+                    @Override
+                    public void onResponse(Call<ArticleResponse> call, Response<ArticleResponse> response) {
+                        if (response.body() != null) {
+                            data.setValue(response.body());
+                        }
+                    }
 
+                    @Override
+                    public void onFailure(Call<ArticleResponse> call, Throwable t) {
+                        data.setValue(null);
+                    }
+                });
+        return data;
     }
 }

@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ProgressBar;
@@ -13,6 +14,7 @@ import android.widget.Toast;
 
 import com.example.newsapp.Adapter.CategoryRVAdapter;
 import com.example.newsapp.Adapter.NewsRVAdapter;
+import com.example.newsapp.CategoryClickInterface;
 import com.example.newsapp.Model.Articles;
 import com.example.newsapp.Model.CategoryRVModel;
 import com.example.newsapp.R;
@@ -29,9 +31,8 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-public class MainActivity extends AppCompatActivity implements CategoryRVAdapter.CategoryClickInterface{
-//44a6f0164757476d9f4e656d94362324
-    public static final String API_KEY ="44a6f0164757476d9f4e656d94362324";
+public class MainActivity extends AppCompatActivity implements CategoryClickInterface {
+
 
     private RecyclerView newsRV, categoryRV;
     private ProgressBar loadingPB;
@@ -48,9 +49,8 @@ public class MainActivity extends AppCompatActivity implements CategoryRVAdapter
 
         init();
         getCategories();
-
         getArticles("All");
-//        getNews("All");
+
         newsRVAdapter.notifyDataSetChanged();
     }
 
@@ -68,62 +68,9 @@ public class MainActivity extends AppCompatActivity implements CategoryRVAdapter
         categoryRVAdapter.notifyDataSetChanged();
     }
 
-    private void getNews(String category)
-    {
-        loadingPB.setVisibility(View.VISIBLE);
-        articlesArrayList.clear();
-        String categoryURL = "https://newsapi.org/v2/top-headlines?country=id&category=" + category + "&apiKey="+API_KEY;
-        String url = "https://newsapi.org/v2/top-headlines?country=id&excludeDomains=stackoverflow.com&sortBy=publishedAt&apiKey="+API_KEY;
-        String BASE_URL = "https://newsapi.org";
-
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(BASE_URL)
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
-        RetrofitAPI retrofitAPI = retrofit.create(RetrofitAPI.class);
-
-        Call<ArticleResponse> call;
-        if(category.equals("All"))
-        {
-            call = retrofitAPI.getAllNews();
-        }
-        else
-        {
-            call = retrofitAPI.getNewsByCategory(categoryURL);
-        }
-
-        call.enqueue(new Callback<ArticleResponse>() {
-            @Override
-            public void onResponse(Call<ArticleResponse> call, Response<ArticleResponse> response) {
-                ArticleResponse newsModel = response.body();
-                loadingPB.setVisibility(View.GONE);
-                List<Articles> articles = newsModel.getArticles();
-                for (int i = 0; i<articles.size();i++)
-                {
-                    articlesArrayList.add(new Articles(
-                            articles.get(i).getTitle(),
-                            articles.get(i).getDescription(),
-                            articles.get(i).getUrlToImage(),
-                            articles.get(i).getUrl(),
-                            articles.get(i).getContent(),
-                            articles.get(i).getPublishedAt(),
-                            articles.get(i).getAuthor(),
-                            articles.get(i).getSource()));
-                }
-                newsRVAdapter.notifyDataSetChanged();
-            }
-
-            @Override
-            public void onFailure(Call<ArticleResponse> call, Throwable t) {
-                Toast.makeText(MainActivity.this,"Fail to get news",Toast.LENGTH_SHORT).show();
-            }
-        });
-    }
-
     @Override
     public void onCategoryClick(int position) {
         String category = categoryRVModelArrayList.get(position).getCategory();
-//        getNews(category);
         getArticles(category);
     }
 
@@ -161,4 +108,8 @@ public class MainActivity extends AppCompatActivity implements CategoryRVAdapter
         });
     }
 
+    public void searchNews(View view) {
+        Intent searchActivityIntent = new Intent(this,SearchActivity.class);
+        startActivity(searchActivityIntent);
+    }
 }

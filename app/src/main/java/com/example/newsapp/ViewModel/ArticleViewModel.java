@@ -20,17 +20,23 @@ public class ArticleViewModel extends AndroidViewModel {
 
         this.articleRepository = new ArticleRepository();
         this.articleResponseLiveData = articleRepository.getDashboardNews(ct);
+
     }
 
     public LiveData<ArticleResponse> getDashboardNewsResponseLiveData(String category)
     {
         if(category.equals("All")) {
-            Log.d("all","stuck");
             return this.articleResponseLiveData;
         }
         else
         {
             return this.articleResponseLiveData = articleRepository.getDashboardNews(category);
         }
+    }
+
+    public LiveData<ArticleResponse> getNewsBySearch(String key)
+    {
+        return this.articleResponseLiveData = articleRepository.getSearchNews(key);
+
     }
 }

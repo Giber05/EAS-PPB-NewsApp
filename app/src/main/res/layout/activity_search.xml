@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/black_shade_1"
-    tools:context=".Activity.MainActivity">
+    tools:context=".Activity.SearchActivity">
 
     <androidx.appcompat.widget.Toolbar
         android:layout_width="match_parent"
@@ -18,7 +18,7 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="News App"
+                android:text="Search News"
                 android:textColor= "@color/yellow"
                 android:padding="4dp"
                 android:gravity="center"
@@ -26,41 +26,22 @@
                 android:textStyle="bold"
                 android:layout_marginRight="15dp"/>
         </RelativeLayout>
-
     </androidx.appcompat.widget.Toolbar>
 
-    <Button
+    <androidx.appcompat.widget.SearchView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/searchBtn"
-        android:layout_below="@+id/idToolbar"
-        android:text="Search News"
-        android:onClick="searchNews"
-        android:textColor="@color/white"
+        android:layout_below="@id/idToolbar"
         android:background="@color/silver"
-        app:backgroundTint="@color/silver"
-        android:layout_marginHorizontal="20dp"
-        android:layout_marginVertical="5dp"
-        android:shadowColor="@color/white"
-        android:outlineAmbientShadowColor="@color/white"
-        android:outlineSpotShadowColor="@color/white"
-        />
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/idRVCategories"
-        android:orientation="horizontal"
-        tools:listitem="@layout/categories_rv_item"
-        android:layout_below="@+id/searchBtn"
-        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        android:backgroundTint="@color/white"
+        android:layout_margin="10dp"
+        android:id="@+id/searchNewsSV"
     />
-
     <androidx.recyclerview.widget.RecyclerView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/idRVCategories"
-        android:id="@+id/idRVNews"
+        android:layout_below="@id/searchNewsSV"
+        android:id="@+id/idRVSearchNews"
         tools:listitem="@layout/news_rv_item"
         android:layout_marginTop="5dp"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
@@ -71,7 +52,8 @@
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
         android:visibility="gone"
-        android:id="@+id/idPBLoading"/>
+        android:id="@+id/idSearchPBLoading"/>
+
 
 
 </RelativeLayout>

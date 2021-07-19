@@ -3,13 +3,17 @@
     package="com.example.newsapp">
 
     <uses-permission android:name="android.permission.INTERNET" />
+
     <queries>
+
         <!-- Browser -->
         <intent>
             <action android:name="android.intent.action.VIEW" />
+
             <data android:scheme="https" />
         </intent>
     </queries>
+
     <application
         android:allowBackup="true"
         android:icon="@drawable/ic_newspaper"
@@ -17,7 +21,8 @@
         android:roundIcon="@drawable/ic_newspaper"
         android:supportsRtl="true"
         android:theme="@style/Theme.NewsApp">
-        <activity android:name=".Activity.NewsDetailActivity"></activity>
+        <activity android:name=".Activity.SearchActivity"></activity>
+        <activity android:name=".Activity.NewsDetailActivity" />
         <activity android:name=".Activity.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

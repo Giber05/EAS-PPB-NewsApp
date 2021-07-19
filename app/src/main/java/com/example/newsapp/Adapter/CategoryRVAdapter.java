@@ -10,6 +10,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.newsapp.CategoryClickInterface;
 import com.example.newsapp.Model.CategoryRVModel;
 import com.example.newsapp.R;
 import com.squareup.picasso.Picasso;
@@ -20,6 +21,7 @@ public class CategoryRVAdapter extends RecyclerView.Adapter<CategoryRVAdapter.Vi
     private ArrayList<CategoryRVModel> categoryRVModels;
     private Context context;
     private CategoryClickInterface categoryClickInterface;
+
 
     public CategoryRVAdapter(ArrayList<CategoryRVModel> categoryRVModels,
                              Context context, CategoryClickInterface categoryClickInterface)
@@ -65,8 +67,5 @@ public class CategoryRVAdapter extends RecyclerView.Adapter<CategoryRVAdapter.Vi
         }
     }
 
-    public interface CategoryClickInterface
-    {
-        void onCategoryClick(int position);
-    }
+
 }
