@@ -29,7 +29,8 @@ public class ArticleRepository {
             retrofitAPI.getTopHeadlines()
                     .enqueue(new Callback<ArticleResponse>() {
                         @Override
-                        public void onResponse(Call<ArticleResponse> call, Response<ArticleResponse> response) {
+                        public void onResponse(Call<ArticleResponse> call,
+                                               Response<ArticleResponse> response) {
                             if (response.body() != null) {
                                 data.setValue(response.body());
                             }

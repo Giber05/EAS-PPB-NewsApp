@@ -56,7 +56,7 @@ public class MainActivity extends AppCompatActivity implements CategoryClickInte
 
     private void getCategories()
     {
-        categoryRVModelArrayList.add(new CategoryRVModel("All","https://images.unsplash.com/photo-1504711434969-e33886168f5c?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=750&q=80"));
+//        categoryRVModelArrayList.add(new CategoryRVModel("All","https://images.unsplash.com/photo-1504711434969-e33886168f5c?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=750&q=80"));
         categoryRVModelArrayList.add(new CategoryRVModel("Technology","https://images.unsplash.com/photo-1485827404703-89b55fcc595e?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=750&q=80"));
         categoryRVModelArrayList.add(new CategoryRVModel("Science","https://images.unsplash.com/photo-1581093450021-4a7360e9a6b5?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=750&q=80"));
         categoryRVModelArrayList.add(new CategoryRVModel("Sports","https://images.unsplash.com/photo-1611119535617-ee346f83bb2c?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=750&q=80"));
@@ -96,7 +96,8 @@ public class MainActivity extends AppCompatActivity implements CategoryClickInte
     {
         loadingPB.setVisibility(View.VISIBLE);
         articlesArrayList.clear();
-        articleViewModel.getDashboardNewsResponseLiveData(category).observe(this, articleResponse -> {
+        articleViewModel.getDashboardNewsResponseLiveData(category).observe(this,
+                articleResponse -> {
             if(articleResponse != null && articleResponse.getArticles()!=null
             && !articleResponse.getArticles().isEmpty())
             {
